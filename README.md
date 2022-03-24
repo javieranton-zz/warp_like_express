@@ -2,7 +2,7 @@
 
 It runs as a native compiled rust library within your Node.js project. Its aim is to make it easy to switch from using ExpressJS to Warp (Rust) while keeping a Node.js runtime and using a similar syntax
 
-I initially coded this with the intention of completely finishing the project. While performance tests show that response times are at least 30% faster and both memory and CPU usages are also 30% lower, I ran into the realization that it isn't suited for my project in mind. I now think that it's better to run the Rust-Warp server completely on its own, only using Node.js for the initial call that runs the Rust binary instead of using JS code for the endpoint backend logic
+I initially coded this with the intention of completely finishing the project. While performance tests show that response times are at least 30% faster and both memory and CPU usages are also 30% lower, I ran into the realization that it isn't suited for my project in mind. I now think that it's better to run the Rust-Warp server completely on its own, only using Node.js for the initial call that starts the Rust server instead of using JS code for the endpoint backend logic. 30% performance gain isn't enough for me to justify finishing this project. Using a pure-rust backend logic produces incredible results - depending on the # of cores, it can be in the order of 2,000% performance gain. At the end of the day, JS backend logic will go through a Node.js bottleneck no matter how efficient the web server sitting in front of it is
 
 But I did spend a fair bit of time coding this and I think that it might help others if I share it. So here it is
 
