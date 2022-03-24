@@ -11,7 +11,7 @@ module.exports.get = function(path, request){
 let onErrorCallback = (err) =>{
 };
 let getCallBack = (endpoint, queryStringsString, requestHeaders, uuid) => {
-    console.log(requestHeaders);
+    //console.log(requestHeaders);
     let requestHeadersObject = JSON.parse(requestHeaders);
     let request = {query:{}, header: (name) => {
         return requestHeadersObject[name] ? requestHeadersObject[name] : "unknown";
