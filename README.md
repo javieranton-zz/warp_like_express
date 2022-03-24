@@ -8,7 +8,7 @@ But I did spend a fair bit of time coding this and I think that it might help ot
 
 ## Current state
 
-You can open GET endpoints that include request query strings and headers. Paths must be absolute (no slashes yet). The endpoints can reply with any type of data (text,html,json, or any buffer) and can also set its own custom headers
+You can open GET endpoints that include request query strings and headers. Paths must be absolute (no slashes yet). The endpoints can reply with any type of data (text,html,json, or any buffer) and can also set its own custom response headers
 
 No POST/other functionality is available, but it can be developed. Feel free to fork/PR
 
@@ -41,7 +41,7 @@ GET /test_json
 GET /test_data
 GET /test_image
 ```
-Each endpoint is served by a rust-warp server that then calls your JS backend to execute your custom logic
+Each endpoint is served by a rust-warp server that then calls your JS backend to execute your custom JS logic
 
 # Usage
 
@@ -49,9 +49,9 @@ To use in your project, you need to copy both the `warp_like_express.node` and `
 
 The following code opens the above 4 endpoints, and includes ExpressJS's equivalent in comments
 ```javascript
-var rust_or_express = require("./warp_like_express.js");
+var warp_like_express = require("./warp_like_express.js");
 // equivalent to using below
-// const rust_or_express = require('express');
+// const express = require('express');
 
 warp_like_express.get("test_text",(req, res)=>{
     console.log("test_text called with query strings: "+JSON.stringify(req.query));
