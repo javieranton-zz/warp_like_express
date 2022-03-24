@@ -1,0 +1,13 @@
+{
+  "name": "warp_like_express",
+  "version": "1.0.0",
+  "private": true,
+  "main": "warp_like_express.js",
+  "scripts": {
+    "build": "cargo-cp-artifact -nc warp_like_express.node -- cargo build --message-format=json-render-diagnostics"
+  },
+  "dependencies": {
+    "cargo-cp-artifact": "^0.1.5"
+  },
+  "devDependencies": {}
+}
