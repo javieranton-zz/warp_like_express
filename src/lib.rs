@@ -61,13 +61,6 @@ fn singleton() -> &'static Databridge {
 }
 #[tokio::main]
 async fn warp_like_express_api(mut cx: FunctionContext) -> JsResult<JsUndefined> {
-    CALLBACK
-        .lock()
-        .unwrap()
-        .replace(cx.argument::<JsFunction>(1)?.root(&mut cx));
-
-    //Set global ref to queue
-    Q.lock().unwrap().replace(cx.channel());
     let config = cx.argument::<JsString>(0)?.value(&mut cx);
     let mut json_config = json::parse(&config).unwrap();
     let port : f64 = match json_config["port"] {
@@ -78,6 +71,12 @@ async fn warp_like_express_api(mut cx: FunctionContext) -> JsResult<JsUndefined>
     *port_u_16 = port as u16;
     let get_endpoints_string : String = json_config["getEndpoints"].take_string().unwrap();
     let get_paths :Vec<String> = get_endpoints_string.split(",").map(|s| s.to_string()).collect();
+    CALLBACK
+        .lock()
+        .unwrap()
+        .replace(cx.argument::<JsFunction>(1)?.root(&mut cx));
+    //Set global ref to queue
+    Q.lock().unwrap().replace(cx.channel());
     let done_callback : Handle<JsFunction> = cx.argument::<JsFunction>(2)?;
     let _x : Handle<JsUndefined> = done_callback
         .call_with(&mut cx)
@@ -184,9 +183,9 @@ async fn warp_like_express_response_callback_api(mut cx: FunctionContext) -> JsR
     let body_js_bytes: Handle<JsBuffer> = cx.argument(2)?;
     let body_bytes = body_js_bytes.as_slice(&mut cx).to_vec();
     if singleton().wait_for_js_callback_signal.lock().unwrap().contains_key(&uuid) {
-        singleton().wait_for_js_callback_signal.lock().unwrap().get(&uuid).unwrap().send(()).expect("Could not send signal on channel.");
         singleton().wait_for_js_callback_headers.lock().unwrap().insert(uuid.clone(),headers_string);
         singleton().wait_for_js_callback_body.lock().unwrap().insert(uuid.clone(),body_bytes);
+        singleton().wait_for_js_callback_signal.lock().unwrap().get(&uuid).unwrap().send(()).expect("Could not send signal on channel.");
         singleton().wait_for_js_callback_signal.lock().unwrap().remove(&uuid);
     }
     //println!("Received Js -> Rs send signal for call {}", uuid.clone());
